@@ -1,5 +1,4 @@
 import React,{  useRef, useState } from "react";
-// import { Player } from "video-react";
 import RecordRTC from 'recordrtc';
 import {LiveButton, StreamContainer, VideoContainer} from "./VideoStram.elements"
 import { VscDebugStart, VscDebugPause } from "react-icons/vsc";
@@ -7,7 +6,7 @@ import { VscDebugStart, VscDebugPause } from "react-icons/vsc";
 const VideoStream = () => {
   const video = useRef(null);
   const [recording, setRecording] = useState(false)
-  const [recorder, setRecorder] = useState();
+  const [recorder, setRecorder] = useState(null);
 
   const startRecord = () => {
     setRecording(true)
@@ -19,33 +18,35 @@ const VideoStream = () => {
      const  recorderMedia = RecordRTC(camera, {
         type: "video"
       });
+
+      recorderMedia.startRecording();
       setRecorder(recorderMedia)
-      recorder.startRecording();
-      console.log("recorder ", recorder)
 
       // release camera on stopRecording
-      recorder.camera = camera;
-      console.log(video.current);
+      setRecorder((prev) =>{
+       return{ ...prev,
+        camera: camera,}
+      })
     });
   };
 
   const stopRecord = () => {
     console.log("am i here", recorder)
-    setRecording(false)
     console.log(recording)
     recorder?.stopRecording?.(stopRecordingCallback);
   };
-
+  
   const stopRecordingCallback = () => {
     video.current.src = video.srcObject = null;
     video.current.muted = false;
     video.current.volume = 1;
     video.current.srcObject = null;
     video.current.src = URL.createObjectURL(recorder.getBlob());
-
-    recorder.camera.stop();
+    
+    recorder.camera?.stop();
     recorder.destroy();
     setRecorder(null)
+    setRecording(false)
   };
 
   const captureCamera = (callback) => {
