@@ -1,7 +1,7 @@
 import React,{  useRef, useState } from "react";
 import RecordRTC from 'recordrtc';
-import {LiveButton, StreamContainer, VideoContainer} from "./VideoStram.elements"
-import { VscDebugStart, VscDebugPause } from "react-icons/vsc";
+import {LiveButton, StreamContainer, VideoContainer,PlayButton, PauseButton} from "./VideoStram.elements"
+
 
 const VideoStream = () => {
   const video = useRef(null);
@@ -69,11 +69,11 @@ const VideoStream = () => {
       {!recording ?
         (<>
           <p>Please click start button to go live</p>
-          <LiveButton onClick={startRecord}> <VscDebugStart /> Start </LiveButton>
+          <LiveButton onClick={startRecord}> <PlayButton /> Start </LiveButton>
         </>) : (
           <>
           <p>To stop live, please click stop</p>
-          <LiveButton onClick={stopRecord}> <VscDebugPause /> Stop </LiveButton>
+          <LiveButton onClick={stopRecord}> <PauseButton /> Stop </LiveButton>
         </>
         )
       }
