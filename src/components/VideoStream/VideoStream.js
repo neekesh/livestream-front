@@ -1,15 +1,19 @@
 import React,{  useRef, useState } from "react";
 import RecordRTC from 'recordrtc';
 import {LiveButton, StreamContainer, VideoContainer,PlayButton, PauseButton} from "./VideoStram.elements"
+import { StartRecording, StopRecording } from "../../redux";
+import { connect } from "react-redux";
 
 
-const VideoStream = () => {
+const VideoStream = (props) => {
   const video = useRef(null);
-  const [recording, setRecording] = useState(false)
+  // const [recording, setRecording] = useState(false)
   const [recorder, setRecorder] = useState(null);
 
   const startRecord = () => {
-    setRecording(true)
+    // setRecording(true)
+    props.startRecording()
+    console.log(props.recording)
     captureCamera(function (camera) {
       video.current.muted = true;
       video.current.volume = 0;
@@ -32,7 +36,7 @@ const VideoStream = () => {
 
   const stopRecord = () => {
     console.log("am i here", recorder)
-    console.log(recording)
+    // console.log(recording)
     recorder?.stopRecording?.(stopRecordingCallback);
   };
   
@@ -46,7 +50,8 @@ const VideoStream = () => {
     recorder.camera?.stop();
     recorder.destroy();
     setRecorder(null)
-    setRecording(false)
+    props.stopRecording()
+    // setRecording(false)
   };
 
   const captureCamera = (callback) => {
@@ -66,7 +71,7 @@ const VideoStream = () => {
 
   return (
     <StreamContainer>
-      {!recording ?
+      {!props.recording ?
         (<>
           <p>Please click start button to go live</p>
           <LiveButton onClick={startRecord}> <PlayButton /> Start </LiveButton>
@@ -77,10 +82,22 @@ const VideoStream = () => {
         </>
         )
       }
-      <h4>You are about to record</h4>
        <VideoContainer ref={video} controls autoPlay={true} playsInline={true} />
     </StreamContainer>
   );
 }
 
-export default VideoStream
+const mapStateToProps = state => {
+  return {
+    recording: state.recording
+  }
+}
+
+const mapDispatchToProps =  dispatch =>{
+  return {
+    startRecording: () => dispatch(StartRecording()),
+    stopRecording: () => dispatch(StopRecording()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(VideoStream)
