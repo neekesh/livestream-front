@@ -1,5 +1,5 @@
-import {createStore} from "redux"
+import {configureStore} from "@reduxjs/toolkit"
 
 import RecordingReducer from "./recordingReducer"
 
-export const recordingStore = createStore(RecordingReducer)
+export const recordingStore = configureStore(RecordingReducer)
