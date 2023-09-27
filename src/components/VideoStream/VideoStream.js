@@ -7,11 +7,9 @@ import { connect } from "react-redux";
 
 const VideoStream = (props) => {
   const video = useRef(null);
-  // const [recording, setRecording] = useState(false)
   const [recorder, setRecorder] = useState(null);
 
   const startRecord = () => {
-    // setRecording(true)
     props.startRecording()
     console.log(props.recording)
     captureCamera(function (camera) {
@@ -35,8 +33,6 @@ const VideoStream = (props) => {
   };
 
   const stopRecord = () => {
-    console.log("am i here", recorder)
-    // console.log(recording)
     recorder?.stopRecording?.(stopRecordingCallback);
   };
   
@@ -51,7 +47,6 @@ const VideoStream = (props) => {
     recorder.destroy();
     setRecorder(null)
     props.stopRecording()
-    // setRecording(false)
   };
 
   const captureCamera = (callback) => {
