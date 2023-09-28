@@ -33,16 +33,20 @@ const VideoStream = (props) => {
   };
 
   const stopRecord = () => {
+
     recorder?.stopRecording?.(stopRecordingCallback);
+    
   };
   
   const stopRecordingCallback = () => {
+
     video.current.src = video.srcObject = null;
     video.current.muted = false;
     video.current.volume = 1;
     video.current.srcObject = null;
     video.current.src = URL.createObjectURL(recorder.getBlob());
     
+
     recorder.camera?.stop();
     recorder.destroy();
     setRecorder(null)
