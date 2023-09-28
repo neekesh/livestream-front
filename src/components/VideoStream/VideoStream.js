@@ -35,7 +35,7 @@ const VideoStream = (props) => {
   const stopRecord = () => {
 
     recorder?.stopRecording?.(stopRecordingCallback);
-    
+
   };
   
   const stopRecordingCallback = () => {
@@ -70,16 +70,19 @@ const VideoStream = (props) => {
 
   return (
     <StreamContainer>
-      {!props.recording ?
-        (<>
-          <p>Please click start button to go live</p>
-          <LiveButton onClick={startRecord}> <PlayButton /> Start </LiveButton>
-        </>) : (
-          <>
-          <p>To stop live, please click stop</p>
-          <LiveButton onClick={stopRecord}> <PauseButton /> Stop </LiveButton>
-        </>
-        )
+      {
+          !props.recording ?
+            (
+              <>
+                <p>Please click start button to go live</p>
+                <LiveButton onClick={startRecord}> <PlayButton /> Start </LiveButton>
+              </>
+            ) : (
+              <>
+                <p>To stop live, please click stop</p>
+                <LiveButton onClick={stopRecord}> <PauseButton /> Stop </LiveButton>
+              </>
+            )
       }
        <VideoContainer ref={video} controls autoPlay={true} playsInline={true} />
     </StreamContainer>
