@@ -96,6 +96,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps =  dispatch =>{
+  
   return {
     startRecording: () => dispatch(StartRecording()),
     stopRecording: () => dispatch(StopRecording()),
