@@ -1,8 +1,9 @@
 import React,{  useRef, useState } from "react";
 import RecordRTC from 'recordrtc';
-import {LiveButton, StreamContainer, VideoContainer,PlayButton, PauseButton} from "./VideoStram.elements"
+import { StreamContainer, VideoContainer} from "./VideoStram.elements"
 import { StartRecording, StopRecording } from "../../redux";
 import { connect } from "react-redux";
+import {LiveButton, PlayButton, PauseButton, ButtonContainer} from "../../globalStyles"
 
 
 const VideoStream = (props) => {
@@ -10,6 +11,7 @@ const VideoStream = (props) => {
   const [recorder, setRecorder] = useState(null);
 
   const startRecord = () => {
+
     props.startRecording()
     console.log(props.recording)
     captureCamera(function (camera) {
@@ -21,32 +23,30 @@ const VideoStream = (props) => {
         type: "video"
       });
 
-      recorderMedia.startRecording();
+      recorderMedia.startRecording()
       setRecorder(recorderMedia)
 
       // release camera on stopRecording
       setRecorder((prev) =>{
-       return{ ...prev,
-        camera: camera,}
+       return{ 
+        ...prev,
+        camera: camera,
+      }
       })
     });
   };
 
   const stopRecord = () => {
-
     recorder?.stopRecording?.(stopRecordingCallback);
 
   };
   
   const stopRecordingCallback = () => {
-
     video.current.src = video.srcObject = null;
     video.current.muted = false;
     video.current.volume = 1;
     video.current.srcObject = null;
     video.current.src = URL.createObjectURL(recorder.getBlob());
-    
-
     recorder.camera?.stop();
     recorder.destroy();
     setRecorder(null)
@@ -70,21 +70,18 @@ const VideoStream = (props) => {
 
   return (
     <StreamContainer>
-      {
+      <ButtonContainer>
+
+        {
           !props.recording ?
             (
-              <>
-                <p>Please click start button to go live</p>
                 <LiveButton onClick={startRecord}> <PlayButton /> Start </LiveButton>
-              </>
             ) : (
-              <>
-                <p>To stop live, please click stop</p>
                 <LiveButton onClick={stopRecord}> <PauseButton /> Stop </LiveButton>
-              </>
             )
-      }
-       <VideoContainer ref={video} controls autoPlay={true} playsInline={true} />
+        }
+      </ButtonContainer>
+       <VideoContainer ref={video} controls autoPlay={true} playsInline={true}  id="video1"/>
     </StreamContainer>
   );
 }
