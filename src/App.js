@@ -1,7 +1,7 @@
 import GlobalStyle from "./globalStyles";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import {Navbar} from "./components"
-import { Homepage, Streampage } from "./pages";
+import { Homepage, Streampage, JoinStreamPage } from "./pages";
 import { Context } from "./utils/Context";
 import LiveStreamIcon from "./images/livestream.png"
 import { Provider } from "react-redux";
@@ -20,6 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage/>} />
             <Route path="/stream" element={<Streampage/>} />
+            <Route path="/join" element={<JoinStreamPage/>} />
           </Routes>
         </Router>
       </Context.Provider>
